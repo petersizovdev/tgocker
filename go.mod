@@ -2,7 +2,10 @@ module github.com/petersizovdev/tgocker
 
 go 1.23.1
 
-require github.com/docker/docker v27.3.1+incompatible
+require (
+	github.com/docker/docker v27.3.1+incompatible
+	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
+)
 
 require (
 	github.com/Microsoft/go-winio v0.4.14 // indirect
@@ -13,7 +16,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/moby/docker-image-spec v1.3.1 // indirect
 	github.com/moby/term v0.5.0 // indirect

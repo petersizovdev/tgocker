@@ -1,27 +1,28 @@
 package keyboard
 
 import (
-	"context"
-	"log"
-
+	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/api/types/volume"
 	"github.com/docker/docker/client"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"context"
+	"log"
 )
 
-func CreateMainMenuKeyboard() tgbotapi.InlineKeyboardMarkup {
-	return tgbotapi.NewInlineKeyboardMarkup(
-		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("Containers", "containers"),
-			tgbotapi.NewInlineKeyboardButtonData("Images", "images"),
-			tgbotapi.NewInlineKeyboardButtonData("Volumes", "volumes"),
-		),
-	)
+func CreateMainMenuKeyboard() *tgbotapi.InlineKeyboardMarkup {
+	return &tgbotapi.InlineKeyboardMarkup{
+		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{
+			{
+				tgbotapi.NewInlineKeyboardButtonData("Containers", "containers"),
+				tgbotapi.NewInlineKeyboardButtonData("Images", "images"),
+				tgbotapi.NewInlineKeyboardButtonData("Volumes", "volumes"),
+			},
+		},
+	}
 }
 
-func CreateContainersKeyboard() tgbotapi.InlineKeyboardMarkup {
+func CreateContainersKeyboard() *tgbotapi.InlineKeyboardMarkup {
 	apiClient, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		log.Panic(err)
@@ -48,10 +49,10 @@ func CreateContainersKeyboard() tgbotapi.InlineKeyboardMarkup {
 		tgbotapi.NewInlineKeyboardButtonData("Back", "main_menu"),
 	))
 
-	return tgbotapi.NewInlineKeyboardMarkup(rows...)
+	return &tgbotapi.InlineKeyboardMarkup{InlineKeyboard: rows}
 }
 
-func CreateImagesKeyboard() tgbotapi.InlineKeyboardMarkup {
+func CreateImagesKeyboard() *tgbotapi.InlineKeyboardMarkup {
 	apiClient, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		log.Panic(err)
@@ -74,10 +75,10 @@ func CreateImagesKeyboard() tgbotapi.InlineKeyboardMarkup {
 		tgbotapi.NewInlineKeyboardButtonData("Back", "main_menu"),
 	))
 
-	return tgbotapi.NewInlineKeyboardMarkup(rows...)
+	return &tgbotapi.InlineKeyboardMarkup{InlineKeyboard: rows}
 }
 
-func CreateVolumesKeyboard() tgbotapi.InlineKeyboardMarkup {
+func CreateVolumesKeyboard() *tgbotapi.InlineKeyboardMarkup {
 	apiClient, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		log.Panic(err)
@@ -100,13 +101,34 @@ func CreateVolumesKeyboard() tgbotapi.InlineKeyboardMarkup {
 		tgbotapi.NewInlineKeyboardButtonData("Back", "main_menu"),
 	))
 
-	return tgbotapi.NewInlineKeyboardMarkup(rows...)
+	return &tgbotapi.InlineKeyboardMarkup{InlineKeyboard: rows}
 }
 
-func CreateBackKeyboard(parent string) tgbotapi.InlineKeyboardMarkup {
-	return tgbotapi.NewInlineKeyboardMarkup(
-		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("Back", parent),
-		),
-	)
+func CreateContainerActionsKeyboard(containerID string) *tgbotapi.InlineKeyboardMarkup {
+	return &tgbotapi.InlineKeyboardMarkup{
+		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{
+			{
+				tgbotapi.NewInlineKeyboardButtonData("Start", "start_"+containerID),
+				tgbotapi.NewInlineKeyboardButtonData("Stop", "stop_"+containerID),
+			},
+			{
+				tgbotapi.NewInlineKeyboardButtonData("Restart", "restart_"+containerID),
+				tgbotapi.NewInlineKeyboardButtonData("Remove", "remove_"+containerID),
+			},
+			{
+				tgbotapi.NewInlineKeyboardButtonData("Back", "containers"),
+			},
+		},
+	}
+}
+
+
+func CreateBackKeyboard(parent string) *tgbotapi.InlineKeyboardMarkup {
+	return &tgbotapi.InlineKeyboardMarkup{
+		InlineKeyboard: [][]tgbotapi.InlineKeyboardButton{
+			{
+				tgbotapi.NewInlineKeyboardButtonData("Back", parent),
+			},
+		},
+	}
 }
